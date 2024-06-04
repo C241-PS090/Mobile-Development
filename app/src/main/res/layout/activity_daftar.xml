@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/green_background"
+    android:gravity="center"
+    tools:context=".daftar">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        tools:ignore="MissingConstraints">
+
+        <ImageView
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:src="@drawable/diabetes" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="70dp"
+            android:fontFamily="@font/poppin_bold"
+            android:text="Ayo Daftar Dulu"
+            android:textColor="@color/white"
+            android:textSize="30sp" />
+
+        <EditText
+            android:id="@+id/input_nama"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/round"
+            android:backgroundTint="#D9D9D9"
+            android:fontFamily="@font/poppin_bold"
+            android:hint="Nama"
+            android:padding="10dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/input_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/round"
+            android:backgroundTint="#D9D9D9"
+            android:fontFamily="@font/poppin_bold"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:padding="10dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/input_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/round"
+            android:backgroundTint="#D9D9D9"
+            android:fontFamily="@font/poppin_bold"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:padding="10dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/daftar_btn_splash"
+            android:layout_width="302dp"
+            android:layout_height="57dp"
+            android:backgroundTint="@color/greenlight"
+            android:fontFamily="@font/poppin_bold"
+            android:text="Daftar"
+            android:textSize="30sp" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="112dp"
+        android:layout_height="33dp"
+        android:layout_below="@+id/linearLayout"
+        android:layout_marginTop="49dp"
+        android:text="< kembali"
+        android:fontFamily="@font/poppin_bold"
+        android:textColor="@color/white"
+        android:layout_marginStart="10dp"
+        android:textSize="20sp" />
+
+
+</RelativeLayout>

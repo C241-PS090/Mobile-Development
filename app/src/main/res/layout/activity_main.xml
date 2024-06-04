@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/green_background"
+    android:gravity="center"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        tools:ignore="MissingConstraints">
+
+        <ImageView
+            android:layout_width="170dp"
+            android:layout_height="170dp"
+            android:src="@drawable/diabetes"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Diabetes"
+            android:textSize="40sp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/poppin_bold"
+            android:layout_gravity="center" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sense"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/poppin_bold"/>
+
+        <Button
+            android:layout_width="302dp"
+            android:layout_height="57dp"
+            android:layout_marginTop="130dp"
+            android:text="Masuk"
+            android:textSize="30sp"
+            android:id="@+id/masuk_btn_splsh"
+            android:backgroundTint="@color/greenlight"
+            android:fontFamily="@font/poppin_bold"/>
+
+        <Button
+            android:layout_width="302dp"
+            android:layout_height="57dp"
+            android:text="Daftar"
+            android:textSize="30sp"
+            android:id="@+id/daftar_btn_splash"
+            android:backgroundTint="@color/greenlight"
+            android:fontFamily="@font/poppin_bold"/>
+
+
+
+
+
+
+    </LinearLayout>
+
+</RelativeLayout>
