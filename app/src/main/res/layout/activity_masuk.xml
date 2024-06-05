@@ -6,21 +6,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/green_background"
-    tools:context=".daftar">
-
+    tools:context=".masuk">
+    
     <LinearLayout
-        android:id="@+id/linearLayout"
         android:layout_marginTop="100dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical"
         tools:ignore="MissingConstraints">
-
+        
         <ImageView
             android:layout_width="130dp"
             android:layout_height="130dp"
-            android:src="@drawable/diabetes" />
+            android:src="@drawable/diabetes"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -29,28 +28,12 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="70dp"
             android:fontFamily="@font/poppin_bold"
-            android:text="Ayo Daftar Dulu"
+            android:text="Login"
             android:textColor="@color/white"
             android:textSize="30sp" />
 
         <EditText
-            android:id="@+id/input_nama"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="20dp"
-            android:background="@drawable/round"
-            android:backgroundTint="#D9D9D9"
-            android:fontFamily="@font/poppin_bold"
-            android:hint="Nama"
-            android:padding="10dp"
-            android:textColor="@color/black"
-            android:textColorHint="@color/black"
-            android:textSize="14sp" />
-
-        <EditText
-            android:id="@+id/input_email"
+            android:id="@+id/input_email_Login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -67,7 +50,7 @@
             android:textSize="14sp" />
 
         <EditText
-            android:id="@+id/input_password"
+            android:id="@+id/input_password_Login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -84,16 +67,16 @@
             android:textSize="14sp" />
 
         <Button
-            android:id="@+id/daftar_btn_splash"
+            android:id="@+id/Login"
             android:layout_width="302dp"
             android:layout_height="57dp"
             android:backgroundTint="@color/greenlight"
             android:fontFamily="@font/poppin_bold"
-            android:text="Daftar"
+            android:text="Masuk"
             android:textSize="30sp" />
 
         <TextView
-            android:id="@+id/back"
+            android:id="@+id/back_Login"
             android:layout_gravity="left"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -103,7 +86,6 @@
             android:fontFamily="@font/poppin_bold"
             android:textColor="@color/white"
             android:textSize="20sp" />
-
+        
     </LinearLayout>
-
 </RelativeLayout>

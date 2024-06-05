@@ -55,11 +55,6 @@
             android:backgroundTint="@color/greenlight"
             android:fontFamily="@font/poppin_bold"/>
 
-
-
-
-
-
     </LinearLayout>
 
 </RelativeLayout>
