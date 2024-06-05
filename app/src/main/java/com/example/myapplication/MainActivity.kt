@@ -20,6 +20,7 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this,daftar::class.java)
             startActivity(intent)
         }
+
         binding.masukBtnSplsh.setOnClickListener {
             val intent = Intent(this,masuk::class.java)
             startActivity(intent)
