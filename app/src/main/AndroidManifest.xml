@@ -22,17 +22,16 @@
             android:name=".Quiz"
             android:exported="false" />
         <activity
-            android:name=".masuk"
+            android:name=".Masuk"
             android:exported="false" />
         <activity
-            android:name=".daftar"
+            android:name=".Daftar"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
