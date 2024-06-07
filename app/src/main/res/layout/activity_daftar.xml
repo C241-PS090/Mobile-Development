@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/green_background"
-    tools:context=".Daftar">
+    tools:context=".UI.Daftar">
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -84,7 +84,7 @@
             android:textSize="14sp" />
 
         <Button
-            android:id="@+id/daftar_btn_splash"
+            android:id="@+id/daftar_btn"
             android:layout_width="302dp"
             android:layout_height="57dp"
             android:backgroundTint="@color/greenlight"
