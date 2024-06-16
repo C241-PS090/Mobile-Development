@@ -45,7 +45,7 @@ class Masuk : AppCompatActivity() {
                     if (responseBody != null) {
                         Toast.makeText(this@Masuk, "Login successful: ${responseBody.message}", Toast.LENGTH_SHORT).show()
                         // Navigate to the next activity
-                        val intent = Intent(this@Masuk, Profil::class.java)
+                        val intent = Intent(this@Masuk, Scan::class.java)
                         startActivity(intent)
                         finish() // Optional: close this activity
                     } else {

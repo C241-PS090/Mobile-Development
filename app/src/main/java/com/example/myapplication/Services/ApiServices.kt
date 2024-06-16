@@ -33,7 +33,7 @@ data class LoginResponse(
     val message: String
 )
 
-interface ApiService{
+interface ApiService {
     @POST("register")
     @FormUrlEncoded
     fun register(
@@ -47,6 +47,11 @@ interface ApiService{
     fun login(
         @Field("email") email: String,
         @Field("password") password: String
+    ): Call<LoginResponse>
+
+    @GET("user/profile")
+    fun getUserProfile(
+        @Header("Authorization") token: String
     ): Call<LoginResponse>
 }
 class ApiConfig{
