@@ -29,17 +29,28 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="20dp">
 
             <Button
                 android:layout_width="150dp"
                 android:layout_height="57dp"
-                android:text="Ambil Foto"
+                android:text="Foto"
                 android:textSize="30sp"
                 android:id="@+id/ambil_foto"
                 android:backgroundTint="@color/greenlight"
                 android:fontFamily="@font/poppin_bold"/>
 
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="57dp"
+                android:text="Galeri"
+                android:textSize="20sp"
+                android:id="@+id/galeri"
+                android:layout_marginStart="10dp"
+                android:backgroundTint="@color/greenlight"
+                android:fontFamily="@font/poppin_bold"/>
 
         </LinearLayout>
 

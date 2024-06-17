@@ -25,6 +25,9 @@ class Scan : AppCompatActivity() {
         binding.ambilFoto.setOnClickListener {
             startCamera()
         }
+        binding.galeri.setOnClickListener {
+            startGallery()
+        }
     }
 
     private fun startCamera() {
@@ -51,5 +54,21 @@ class Scan : AppCompatActivity() {
             val result = BitmapFactory.decodeFile(myFile.path)
             binding.imagePreview.setImageBitmap(result)
         }
+    }
+
+    private val launcherIntentGallery = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) {
+        if (it.resultCode == RESULT_OK) {
+            val myFile = File(currentPhotoPath)
+            getFile = myFile
+            val result = BitmapFactory.decodeFile(myFile.path)
+            binding.imagePreview.setImageBitmap(result)
+        }
+    }
+    private fun startGallery() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        launcherIntentGallery.launch(intent)
     }
 }
