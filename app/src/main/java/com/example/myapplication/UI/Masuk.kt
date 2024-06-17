@@ -44,13 +44,9 @@ class Masuk : AppCompatActivity() {
                 // Save login result to SharedPreferences
                 sharedPreference.setStatusLogin(true)
                 sharedPreference.saveUserToken(loginResult.token)
-                sharedPreference.saveUserName(loginResult.name)
-                sharedPreference.saveUserEmail(loginResult.email)
+                sharedPreference.saveUserId(loginResult.userId)
 
                 val intent = Intent(this, Profil::class.java)
-                intent.putExtra("NAME", loginResult.name)
-                intent.putExtra("EMAIL", loginResult.email)
-                intent.putExtra("TOKEN", loginResult.token)
                 startActivity(intent)
             } else {
                 Log.d("Masuk", "nama is null")

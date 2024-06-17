@@ -82,13 +82,14 @@ interface ApiService {
         @Field("password") password: String
     ): Call<LoginResponse>
 
-    @GET("user/profile")
+    @GET("users/{userId}")
     fun getUserProfile(
-        @Header("Authorization") token: String
-    ): Call<LoginResponse>
+        @Header("Authorization") token: String,
+        @Path("userId") userId: String,
+    ): Call<profileResponse>
 
     fun profile(
-        @Header("Authorization") token: String
+        @Header("authorization") token: String
     ): Call<LoginResponse>
 
     @PUT("api/users/{userId}")

@@ -9,6 +9,7 @@ class SharedPreference(context: Context) {
     private val myToken = "Bearer"
     private val myName = "Name"
     private val myEmail = "Email"
+    private val myid = "userId"
     private val sharedPreference: SharedPreferences
 
     init {
@@ -29,6 +30,13 @@ class SharedPreference(context: Context) {
 
     fun getUserToken(): String? {
         return sharedPreference.getString(myToken, " ")
+    }
+    fun saveUserId(id: String) {
+        sharedPreference.edit().putString(myid, id).apply()
+    }
+
+    fun getUserId(): String? {
+        return sharedPreference.getString(myid, " ")
     }
 
     fun clearUserToken() {
