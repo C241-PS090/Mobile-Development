@@ -1,12 +1,17 @@
 package com.example.myapplication.UI
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.example.myapplication.Image.createCustomTempFile
 import com.example.myapplication.databinding.ActivityScanBinding
@@ -23,11 +28,39 @@ class Scan : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.ambilFoto.setOnClickListener {
-            startCamera()
+            if (checkCameraPermission()) {
+                startCamera()
+            } else {
+                requestCameraPermission()
+            }
         }
+
         binding.galeri.setOnClickListener {
             startGallery()
         }
+    }
+
+    private fun checkCameraPermission(): Boolean {
+        return ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.CAMERA
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            startCamera()
+        } else {
+            Toast.makeText(this, "Anda harus memberikan akses untuk melanjutkan", Toast.LENGTH_SHORT).show()
+            // Handle permission not granted case
+            // You may show a dialog or toast indicating why you need the permission
+        }
+    }
+
+    private fun requestCameraPermission() {
+        requestPermissionLauncher.launch(Manifest.permission.CAMERA)
     }
 
     private fun startCamera() {
@@ -47,25 +80,26 @@ class Scan : AppCompatActivity() {
 
     private val launcherIntentCamera = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
-    ) {
-        if (it.resultCode == RESULT_OK) {
+    ) { result ->
+        if (result.resultCode == RESULT_OK) {
             val myFile = File(currentPhotoPath)
             getFile = myFile
-            val result = BitmapFactory.decodeFile(myFile.path)
-            binding.imagePreview.setImageBitmap(result)
+            val resultBitmap = BitmapFactory.decodeFile(myFile.path)
+            binding.imagePreview.setImageBitmap(resultBitmap)
         }
     }
 
     private val launcherIntentGallery = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
-    ) {
-        if (it.resultCode == RESULT_OK) {
-            val myFile = File(currentPhotoPath)
-            getFile = myFile
-            val result = BitmapFactory.decodeFile(myFile.path)
-            binding.imagePreview.setImageBitmap(result)
+    ) { result ->
+        if (result.resultCode == RESULT_OK) {
+            val selectedImageUri: Uri? = result.data?.data
+            currentPhotoPath = selectedImageUri?.path ?: ""
+            val resultBitmap = BitmapFactory.decodeFile(currentPhotoPath)
+            binding.imagePreview.setImageBitmap(resultBitmap)
         }
     }
+
     private fun startGallery() {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
