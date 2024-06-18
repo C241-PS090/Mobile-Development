@@ -46,7 +46,7 @@ class Masuk : AppCompatActivity() {
                 sharedPreference.saveUserToken(loginResult.token)
                 sharedPreference.saveUserId(loginResult.userId)
 
-                val intent = Intent(this, Profil::class.java)
+                val intent = Intent(this, Beranda::class.java)
                 startActivity(intent)
             } else {
                 Log.d("Masuk", "nama is null")

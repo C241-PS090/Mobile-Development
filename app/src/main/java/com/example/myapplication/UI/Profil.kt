@@ -6,9 +6,9 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.Preferences.SharedPreference
+import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityProfilBinding
 import profileResponse
-import profileResult
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -26,17 +26,35 @@ class Profil : AppCompatActivity() {
         sharedPreference = SharedPreference(this)
 
         val token = sharedPreference.getUserToken().toString()
-        val Userid = sharedPreference.getUserId().toString()
+        val userId = sharedPreference.getUserId().toString()
         val authorizationHeader = "Bearer $token"
 
-        print("Token : $token")
-        print("Userid : $Userid")
-        GetProfile(authorizationHeader,Userid)
-        binding.inputEmailProfile.setText(sharedPreference.getUserEmail())
-        binding.displayNamaProfile.setText(sharedPreference.getUserName())
+        print("Token: $token")
+        print("UserId: $userId")
+
+        GetProfile(authorizationHeader, userId)
+        binding.inputEmailProfile.text = sharedPreference.getUserEmail()
+        binding.displayNamaProfile.text = sharedPreference.getUserName()
+
+        binding.bottomNavigationView.selectedItemId = R.id.profile_button
+        binding.bottomNavigationView.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.home_button -> {
+                    startActivity(Intent(this, Beranda::class.java))
+                    true
+                }
+                R.id.camera_button -> {
+                    startActivity(Intent(this, Scan::class.java))
+                    true
+                }
+                R.id.profile_button -> true
+                else -> false
+            }
+        }
     }
-    private fun GetProfile(token:String,Userid:String) {
-        val client = ApiConfig().getApiService().getUserProfile(token, Userid)
+
+    private fun GetProfile(token: String, userId: String) {
+        val client = ApiConfig().getApiService().getUserProfile(token, userId)
         client.enqueue(object : Callback<profileResponse> {
             override fun onResponse(
                 call: Call<profileResponse>,
@@ -47,6 +65,8 @@ class Profil : AppCompatActivity() {
                     if (responseBody != null) {
                         sharedPreference.saveUserName(responseBody.data.name)
                         sharedPreference.saveUserEmail(responseBody.data.email)
+                        binding.displayNamaProfile.text = responseBody.data.name
+                        binding.inputEmailProfile.text = responseBody.data.email
                         Toast.makeText(
                             this@Profil,
                             "Get profile successful: ${responseBody.message}",
@@ -66,8 +86,8 @@ class Profil : AppCompatActivity() {
                         Toast.LENGTH_SHORT
                     ).show()
                 }
-
             }
+
             override fun onFailure(call: Call<profileResponse>, t: Throwable) {
                 Toast.makeText(
                     this@Profil,
@@ -76,6 +96,5 @@ class Profil : AppCompatActivity() {
                 ).show()
             }
         })
-
     }
 }
