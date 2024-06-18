@@ -90,8 +90,6 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-    <!-- Bottom Navigation View -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="0dp"
@@ -105,6 +103,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_navbar" />
+        app:menu="@menu/bottom_navbar"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

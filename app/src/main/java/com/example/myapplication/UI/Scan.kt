@@ -2,20 +2,11 @@ package com.example.myapplication.UI
 
 import ApiConfig
 import PredictResponse
-import android.Manifest
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.graphics.BitmapFactory
-import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.ActivityResultRegistry
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import androidx.core.content.FileProvider
-import com.example.myapplication.Image.createCustomTempFile
+import com.example.myapplication.Image.ImagePicker
 import com.example.myapplication.Preferences.SharedPreference
 import com.example.myapplication.databinding.ActivityScanBinding
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -28,10 +19,8 @@ import java.io.File
 
 class Scan : AppCompatActivity() {
     private lateinit var sharedPreference: SharedPreference
-    private lateinit var currentPhotoPath: String
-    private var getFile: File? = null
     private lateinit var binding: ActivityScanBinding
-
+    private lateinit var imagePicker: ImagePicker
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,21 +28,23 @@ class Scan : AppCompatActivity() {
         binding = ActivityScanBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        imagePicker = ImagePicker(this, binding.imagePreview, application, "com.example.myapplication.fileprovider", activityResultRegistry)
+        imagePicker.initialize()
+
         binding.ambilFoto.setOnClickListener {
-            if (checkCameraPermission()) {
-                startCamera()
+            if (imagePicker.checkCameraPermission()) {
+                imagePicker.startCamera()
             } else {
-                requestCameraPermission()
+                imagePicker.requestCameraPermission()
             }
         }
 
         binding.galeri.setOnClickListener {
-            startGallery()
+            imagePicker.startGallery()
         }
 
-
         binding.scanButton.setOnClickListener {
-            val file = getFile
+            val file = imagePicker.getFile()
             val userId = sharedPreference.getUserId().toString()
             if (file != null) {
                 Predict(file, userId)
@@ -63,84 +54,9 @@ class Scan : AppCompatActivity() {
         }
     }
 
-    private fun checkCameraPermission(): Boolean {
-        return ContextCompat.checkSelfPermission(
-            this,
-            Manifest.permission.CAMERA
-        ) == PackageManager.PERMISSION_GRANTED
-    }
-
-    private val requestPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { isGranted: Boolean ->
-        if (isGranted) {
-            startCamera()
-        } else {
-            Toast.makeText(this, "Anda harus memberikan akses untuk melanjutkan", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun requestCameraPermission() {
-        requestPermissionLauncher.launch(Manifest.permission.CAMERA)
-    }
-
-    private fun startCamera() {
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        intent.resolveActivity(packageManager)
-        createCustomTempFile(application).also {
-            val photoURI: Uri = FileProvider.getUriForFile(
-                this,
-                "com.example.myapplication.fileprovider",
-                it
-            )
-            currentPhotoPath = it.absolutePath
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-            launcherIntentCamera.launch(intent)
-        }
-    }
-
-    private val launcherIntentCamera = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        if (result.resultCode == RESULT_OK) {
-            val myFile = File(currentPhotoPath)
-            getFile = myFile
-            val resultBitmap = BitmapFactory.decodeFile(myFile.path)
-            binding.imagePreview.setImageBitmap(resultBitmap)
-        }
-    }
-
-    private val launcherIntentGallery = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        if (result.resultCode == RESULT_OK) {
-            val selectedImageUri: Uri? = result.data?.data
-            if (selectedImageUri != null) {
-                val tempFile = createCustomTempFile(application)
-                val inputStream = contentResolver.openInputStream(selectedImageUri)
-                tempFile.outputStream().use { outputStream ->
-                    inputStream?.copyTo(outputStream)
-                }
-                getFile = tempFile
-                val resultBitmap = BitmapFactory.decodeFile(tempFile.path)
-                binding.imagePreview.setImageBitmap(resultBitmap)
-            }
-        }
-    }
-
-    private fun startGallery() {
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        launcherIntentGallery.launch(intent)
-    }
-
-    private fun Predict(file: File, UserID: String) {
-        if (file == null) {
-            Toast.makeText(this, "File is null", Toast.LENGTH_SHORT).show()
-            return
-        }
+    private fun Predict(file: File, userId: String) {
         val upFile = MultipartBody.Part.createFormData("file", file.name, file.asRequestBody("multipart/form-data".toMediaTypeOrNull()))
-        val client = ApiConfig().getPredictApiService().Predict(upFile, UserID)
+        val client = ApiConfig().getPredictApiService().Predict(upFile, userId)
 
         client.enqueue(object : Callback<PredictResponse> {
             override fun onResponse(call: Call<PredictResponse>, response: Response<PredictResponse>) {
@@ -152,14 +68,13 @@ class Scan : AppCompatActivity() {
                         Toast.makeText(this@Scan, "Predict failed: No response body", Toast.LENGTH_SHORT).show()
                     }
                 } else {
-                    Toast.makeText(this@Scan, "Predict failed 2: ${response.message()}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@Scan, "Predict failed: ${response.message()}", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<PredictResponse>, t: Throwable) {
-                Toast.makeText(this@Scan, "Predict failed 3: ${t.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@Scan, "Predict failed: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
     }
-
 }

@@ -1,8 +1,12 @@
 package com.example.myapplication.UI
 
 import ApiConfig
-import android.content.Intent
+import android.app.Dialog
 import android.os.Bundle
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
+import android.content.Intent
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.Preferences.SharedPreference
@@ -55,7 +59,7 @@ class Profil : AppCompatActivity() {
         binding.updateProfile.setOnClickListener {
             startActivity(Intent(this, UbahProfil::class.java))}
         binding.LogOut.setOnClickListener {
-            Logout()
+            showLogoutDialog()
         }
     }
 
@@ -104,12 +108,32 @@ class Profil : AppCompatActivity() {
         })
     }
 
-    private fun Logout(){
+    private fun showLogoutDialog() {
+        val dialog = Dialog(this)
+        dialog.setContentView(R.layout.popup_dialog)
+
+        val yesButton: Button = dialog.findViewById(R.id.yesButton)
+        val noButton: Button = dialog.findViewById(R.id.noButton)
+
+        yesButton.setOnClickListener {
+            dialog.dismiss()
+            performLogout()
+        }
+
+        noButton.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
+    private fun performLogout() {
         sharedPreference.setStatusLogin(false)
         sharedPreference.clearUserToken()
         sharedPreference.clearUserLogin()
-        sharedPreference.clearUserEmail()
+        sharedPreference.clearUserName()
         startActivity(Intent(this, MainActivity::class.java))
         finish()
     }
 }
+

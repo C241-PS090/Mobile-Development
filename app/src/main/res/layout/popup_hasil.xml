@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="330dp"
+    android:layout_height="240dp"
+    android:layout_gravity="center"
+    android:background="@drawable/rounded_background"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/alertIcon"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/pop_y"/>
+
+    <TextView
+        android:id="@+id/Hasil"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hasil"
+        android:layout_centerHorizontal="true"
+        android:textSize="24sp"
+        android:fontFamily="@font/poppin_bold"
+        android:textColor="@color/black"
+        android:layout_marginTop="30dp"
+        android:layout_below="@id/alertIcon"/>
+
+    <LinearLayout
+        android:id="@+id/buttonLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="16dp"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/yesButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="8dp"
+            android:text="OK"
+            android:fontFamily="@font/poppin_bold"
+            android:backgroundTint="@color/greenlight"
+            android:textColor="@color/white"/>
+
+    </LinearLayout>
+
+</RelativeLayout>
