@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UI.Profil">
+    tools:context=".UI.UbahProfil">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
@@ -25,7 +25,7 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="MissingConstraints" />
 
-        <TextView
+        <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
@@ -44,20 +44,19 @@
         android:layout_height="0dp"
         android:layout_gravity="center"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
         app:layout_constraintTop_toBottomOf="@id/constraintLayout">
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/imageUpdate"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="305dp"
             android:padding="20dp"
             android:visibility="visible"
             app:srcCompat="@drawable/profile"
             tools:srcCompat="@drawable/profile" />
 
-        <TextView
-            android:id="@+id/display_nama_profile"
+        <EditText
+            android:id="@+id/NameUpdate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -72,58 +71,16 @@
             android:textColorHint="@color/black"
             android:textSize="14sp" />
 
-        <TextView
-            android:id="@+id/input_email_profile"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="20dp"
-            android:background="@drawable/round"
-            android:backgroundTint="#D9D9D9"
-            android:fontFamily="@font/poppin_bold"
-            android:hint="Email"
-            android:inputType="textEmailAddress"
-            android:padding="10dp"
-            android:textColor="@color/black"
-            android:textColorHint="@color/black"
-            android:textSize="14sp" />
-
         <Button
             android:id="@+id/updateProfile"
             android:layout_width="302dp"
             android:layout_height="57dp"
             android:backgroundTint="@color/greenlight"
             android:fontFamily="@font/poppin_bold"
-            android:text="Ubah Profile"
-            android:textSize="30sp"
-            android:layout_gravity="center"/>
-
-        <Button
-            android:id="@+id/LogOut"
-            android:layout_width="302dp"
-            android:layout_height="57dp"
-            android:backgroundTint="#FD6161"
-            android:fontFamily="@font/poppin_bold"
-            android:text="Keluar"
+            android:text="Simpan"
             android:textSize="30sp"
             android:layout_gravity="center"/>
 
     </LinearLayout>
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigationView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:elevation="3dp"
-        app:itemBackground="@drawable/green_background"
-        app:itemIconTint="#FFFFFF"
-        app:itemTextColor="@color/white"
-        app:itemIconSize="40dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_navbar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -51,6 +51,12 @@ class Profil : AppCompatActivity() {
                 else -> false
             }
         }
+
+        binding.updateProfile.setOnClickListener {
+            startActivity(Intent(this, UbahProfil::class.java))}
+        binding.LogOut.setOnClickListener {
+            Logout()
+        }
     }
 
     private fun GetProfile(token: String, userId: String) {
@@ -96,5 +102,14 @@ class Profil : AppCompatActivity() {
                 ).show()
             }
         })
+    }
+
+    private fun Logout(){
+        sharedPreference.setStatusLogin(false)
+        sharedPreference.clearUserToken()
+        sharedPreference.clearUserLogin()
+        sharedPreference.clearUserEmail()
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
     }
 }

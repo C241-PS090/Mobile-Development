@@ -11,6 +11,13 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var sharedPref : SharedPreference
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        if (SharedPreference(this).getStatusLogin()){
+            val intent = Intent(this, Beranda::class.java)
+            startActivity(intent)
+            finish()
+        }
+
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)

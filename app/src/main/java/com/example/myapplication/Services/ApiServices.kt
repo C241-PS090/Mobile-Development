@@ -18,6 +18,8 @@ import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Part
 import retrofit2.http.Path
+import java.io.File
+import java.util.concurrent.TimeUnit
 
 data class SignUpResponse(
 
@@ -65,6 +67,25 @@ data class profileResult(
     val email: String,
 )
 
+data class PredictResponse(
+    @SerializedName("predictions")
+    val predictions: Predictions
+)
+
+data class Predictions(
+    @SerializedName("class")
+    val predictionClass: String,
+
+    @SerializedName("confidence")
+    val confidence: Double,
+
+    @SerializedName("userId")
+    val userId: String,
+
+    @SerializedName("created_at")
+    val createdAt: String
+)
+
 
 interface ApiService {
     @POST("register")
@@ -92,6 +113,13 @@ interface ApiService {
         @Header("authorization") token: String
     ): Call<LoginResponse>
 
+    @POST("predict")
+    @Multipart
+    fun Predict(
+        @Part file: MultipartBody.Part,
+        @Part("userId") userId: String,
+    ): Call<PredictResponse>
+
     @PUT("api/users/{userId}")
     @Multipart
     fun updateUserProfile(
@@ -117,6 +145,27 @@ class ApiConfig {
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()
+        return retrofit.create(ApiService::class.java)
+    }
+    fun getPredictApiService(): ApiService {
+        val loggingInterceptor = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
+
+        val client = OkHttpClient.Builder()
+            .connectTimeout(30, TimeUnit.SECONDS) // Increase timeout to 30 seconds
+            .readTimeout(30, TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS)
+            .addInterceptor(loggingInterceptor)
+            .retryOnConnectionFailure(true) // Enable retry on connection failure
+            .build()
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://predict-api-olsevrwmiq-et.a.run.app/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(client)
+            .build()
+
         return retrofit.create(ApiService::class.java)
     }
 }

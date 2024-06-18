@@ -6,15 +6,20 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.myapplication.Preferences.SharedPreference
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityBerandaBinding
 
 class Beranda : AppCompatActivity() {
+    private lateinit var sharedPreference: SharedPreference
     private lateinit var binding: ActivityBerandaBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityBerandaBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        sharedPreference = SharedPreference(this)
+
+        binding.userName.text = sharedPreference.getUserName()
 
         // Set up bottom navigation
         binding.bottomNavigationView.setOnNavigationItemSelectedListener { item ->
