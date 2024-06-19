@@ -35,19 +35,19 @@
             android:layout_marginTop="20dp">
 
             <Button
+                android:id="@+id/ambil_foto"
                 android:layout_width="150dp"
                 android:layout_height="57dp"
-                android:text="Foto"
-                android:textSize="30sp"
-                android:id="@+id/ambil_foto"
                 android:backgroundTint="@color/greenlight"
-                android:fontFamily="@font/poppin_bold"/>
+                android:fontFamily="@font/poppin_bold"
+                android:text="Foto"
+                android:textSize="30sp" />
 
             <Button
                 android:layout_width="150dp"
                 android:layout_height="57dp"
                 android:text="Galeri"
-                android:textSize="20sp"
+                android:textSize="30sp"
                 android:id="@+id/galeri"
                 android:layout_marginStart="10dp"
                 android:backgroundTint="@color/greenlight"
