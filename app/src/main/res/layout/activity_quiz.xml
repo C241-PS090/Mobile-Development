@@ -99,5 +99,14 @@
             android:textColorHint="@color/black"
             android:textSize="14sp" />
 
+        <Button
+            android:id="@+id/daftar_btn"
+            android:layout_width="302dp"
+            android:layout_height="57dp"
+            android:backgroundTint="@color/greenlight"
+            android:fontFamily="@font/poppin_bold"
+            android:text="Submit"
+            android:textSize="30sp" />
+
     </LinearLayout>
 </RelativeLayout>
