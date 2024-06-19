@@ -87,9 +87,59 @@ data class Predictions(
 )
 
 data class UpdateProfileResponse(
-    @field:SerializedName("message")
-    val message: String
+    @SerializedName("message")
+    val message: String,
 
+    @SerializedName("data")
+    val data: UserData
+)
+
+data class UserData(
+    @SerializedName("password")
+    val password: String,
+
+    @SerializedName("role")
+    val role: String,
+
+    @SerializedName("email")
+    val email: String,
+
+    @SerializedName("createdAt")
+    val createdAt: CreatedAtData,
+
+    @SerializedName("profilePictureUrl")
+    val profilePictureUrl: String,
+
+    @SerializedName("age")
+    val age: String,
+
+    @SerializedName("token")
+    val token: String,
+
+    @SerializedName("gender")
+    val gender: String,
+
+    @SerializedName("name")
+    val name: String,
+
+    @SerializedName("updatedAt")
+    val updatedAt: UpdatedAtData
+)
+
+data class CreatedAtData(
+    @SerializedName("_seconds")
+    val seconds: Long,
+
+    @SerializedName("_nanoseconds")
+    val nanoseconds: Long
+)
+
+data class UpdatedAtData(
+    @SerializedName("_seconds")
+    val seconds: Long,
+
+    @SerializedName("_nanoseconds")
+    val nanoseconds: Long
 )
 
 

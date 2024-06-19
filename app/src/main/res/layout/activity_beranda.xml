@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".UI.Beranda">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -89,18 +90,44 @@
             app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-    <Button
-        android:id="@+id/quiz_btn"
-        android:layout_width="302dp"
-        android:layout_height="57dp"
+
+    <!-- Buttons Section -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/buttonsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:backgroundTint="@color/greenlight"
-        android:fontFamily="@font/poppin_bold"
-        android:text="Pemeriksaan awal"
-        android:textSize="25sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userInfoLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/userInfoLayout">
+
+        <Button
+            android:id="@+id/quiz_btn"
+            android:layout_width="0dp"
+            android:layout_height="57dp"
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="@color/greenlight"
+            android:fontFamily="@font/poppin_bold"
+            android:text="Pemeriksaan awal"
+            android:textSize="25sp"
+            app:layout_constraintEnd_toStartOf="@+id/clinic_btn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <Button
+            android:id="@+id/clinic_btn"
+            android:layout_width="0dp"
+            android:layout_height="57dp"
+            android:layout_marginStart="8dp"
+            android:backgroundTint="@color/greenlight"
+            android:fontFamily="@font/poppin_bold"
+            android:text="Klinik Terdekat"
+            android:textSize="25sp"
+            app:layout_constraintStart_toEndOf="@+id/quiz_btn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
         android:id="@+id/riwayat_text"
@@ -113,15 +140,17 @@
         android:textColor="@color/greenlight"
         android:textSize="25sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/quiz_btn" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonsLayout" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_stories"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="412dp"
+        android:layout_height="316dp"
+        android:paddingBottom="70dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/riwayat_text"
-        android:paddingBottom="70dp"
         tools:listitem="@layout/riwayat" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView

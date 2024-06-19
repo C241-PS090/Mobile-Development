@@ -1,6 +1,7 @@
 package com.example.myapplication.UI
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -44,6 +45,12 @@ class Beranda : AppCompatActivity(), ProfileManager.ProfileCallback {
                 else -> false
             }
         }
+        binding.clinicBtn.setOnClickListener {
+            nearestHospital()
+        }
+        binding.quizBtn.setOnClickListener {
+            startActivity(Intent(this, Quiz::class.java))
+        }
 
         val token = sharedPreference.getUserToken().toString()
         val userId = sharedPreference.getUserId().toString()
@@ -63,5 +70,16 @@ class Beranda : AppCompatActivity(), ProfileManager.ProfileCallback {
 
     override fun onError(errorMessage: String) {
         Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun nearestHospital() {
+        val gmmIntentUri = Uri.parse("geo:0,0?q=hospital")
+        val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+        mapIntent.setPackage("com.google.android.apps.maps")
+        if (mapIntent.resolveActivity(packageManager) != null) {
+            startActivity(mapIntent)
+        } else {
+            Toast.makeText(this, "Google Maps app not found", Toast.LENGTH_SHORT).show()
+        }
     }
 }

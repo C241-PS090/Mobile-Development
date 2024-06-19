@@ -9,6 +9,7 @@ import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.Image.ImagePicker
+import com.example.myapplication.Preferences.SharedPreference
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityUbahProfilBinding
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -23,11 +24,14 @@ class UbahProfil : AppCompatActivity() {
     private lateinit var binding: ActivityUbahProfilBinding
     private lateinit var imagePicker: ImagePicker
     private lateinit var genderSpinner: Spinner
+    private lateinit var sharedPreference: SharedPreference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityUbahProfilBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        sharedPreference = SharedPreference(this)
 
         imagePicker = ImagePicker(this, binding.imageUpdate, application, "com.example.myapplication.fileprovider", activityResultRegistry)
         imagePicker.initialize()
@@ -44,16 +48,20 @@ class UbahProfil : AppCompatActivity() {
         }
 
         binding.updateProfile.setOnClickListener {
-            val token = "Bearer " + intent.getStringExtra("token")
-            val userId = intent.getStringExtra("userId").toString()
+            val token = sharedPreference.getUserToken().toString()
+            val authorizationHeader = "Bearer $token"
+            val userId = sharedPreference.getUserId().toString()
             val Nama = binding.NameUpdate.text.toString().trim()
             val Gender = genderSpinner.selectedItem.toString() // Get selected gender
             val Umur = binding.Umur.text.toString().trim()
+            val Profilepicture = imagePicker.getFile()
+            if (Profilepicture != null) {
+                UpdateProfile(authorizationHeader, userId, Nama, Gender, Umur, Profilepicture)
+            } else {
+                Toast.makeText(this, "File is null", Toast.LENGTH_SHORT).show()
+            }
 
-            // Assuming you have a valid file for Profilepicture
-            val Profilepicture = File("path/to/profile/picture")
 
-            UpdateProfile(token, userId, Nama, Gender, Umur, Profilepicture)
         }
     }
 
@@ -74,12 +82,12 @@ class UbahProfil : AppCompatActivity() {
                         Toast.makeText(this@UbahProfil, "Update Profile failed: No response body", Toast.LENGTH_SHORT).show()
                     }
                 } else {
-                    Toast.makeText(this@UbahProfil, "Update Profile failed: ${response.message()}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@UbahProfil, "Update Profile failed 1: ${response.message()}", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<UpdateProfileResponse>, t: Throwable) {
-                Toast.makeText(this@UbahProfil, "Update Profile failed: ${t.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@UbahProfil, "Update Profile failed 2: ${t.message}", Toast.LENGTH_LONG).show()
             }
         })
     }
