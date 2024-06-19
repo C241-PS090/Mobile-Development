@@ -2,6 +2,7 @@ package com.example.myapplication.UI
 
 import ApiConfig
 import PredictResponse
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -26,6 +27,7 @@ class Scan : AppCompatActivity() {
     private lateinit var sharedPreference: SharedPreference
     private lateinit var binding: ActivityScanBinding
     private lateinit var imagePicker: ImagePicker
+    private var progressDialog: Dialog? = null // Dialog loading
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,11 +54,23 @@ class Scan : AppCompatActivity() {
             val file = imagePicker.getFile()
             val userId = sharedPreference.getUserId().toString()
             if (file != null) {
+                showProgressDialog()
                 Predict(file, userId)
             } else {
                 Toast.makeText(this, "File is null", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    private fun showProgressDialog() {
+        progressDialog = Dialog(this)
+        progressDialog?.setContentView(R.layout.loading)
+        progressDialog?.setCancelable(false) // Prevent dismiss on outside touch
+        progressDialog?.show()
+    }
+
+    private fun dismissProgressDialog() {
+        progressDialog?.dismiss()
     }
 
     private fun Predict(file: File, userId: String) {
@@ -65,10 +79,10 @@ class Scan : AppCompatActivity() {
 
         client.enqueue(object : Callback<PredictResponse> {
             override fun onResponse(call: Call<PredictResponse>, response: Response<PredictResponse>) {
+                dismissProgressDialog() // Dismiss loading dialog
                 if (response.isSuccessful) {
                     val responseBody = response.body()
                     if (responseBody != null) {
-
                         var predict_class = responseBody.predictions.predictionClass
                         val Confidance = responseBody.predictions.confidence
                         val formattedConfidence = String.format("%.2f", Confidance)
@@ -77,14 +91,14 @@ class Scan : AppCompatActivity() {
                         if (predict_class == "Abnormal(Ulcer)"){
                             predict_class = "Ulcer"
                             pesan = "Cek Gula Darah Anda!"
-                        }else if (predict_class == "Normal(Healthy skin)"){
+                        } else if (predict_class == "Normal(Healthy skin)"){
                             predict_class = "Normal"
                             pesan = "Kulit Anda Sehat!"
-                        }else if(predict_class == "Wound Images"){
+                        } else if(predict_class == "Wound Images"){
                             predict_class = "Luka Non-Ulcer"
                             pesan = "Obati Luka Anda!"
                         }
-                        showPredictionDialog(predict_class + " " + formattedConfidence+"%",pesan)
+                        showPredictionDialog(predict_class + " " + formattedConfidence + "%", pesan)
                     } else {
                         Toast.makeText(this@Scan, "Predict failed: No response body", Toast.LENGTH_SHORT).show()
                     }
@@ -94,12 +108,13 @@ class Scan : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<PredictResponse>, t: Throwable) {
+                dismissProgressDialog() // Dismiss loading dialog
                 Toast.makeText(this@Scan, "Predict failed: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
     }
 
-    private fun showPredictionDialog(prediction: String,pesan : String) {
+    private fun showPredictionDialog(prediction: String, pesan: String) {
         val builder = AlertDialog.Builder(this)
         val inflater = layoutInflater
         val dialogLayout = inflater.inflate(R.layout.popup_hasil, null)
@@ -116,7 +131,7 @@ class Scan : AppCompatActivity() {
             alertIcon.setImageResource(R.drawable.warning)
         } else if (pesan == "Kulit Anda Sehat!") {
             alertIcon.setImageResource(R.drawable.ceklis)
-        } else{
+        } else {
             alertIcon.setImageResource(R.drawable.warning_yellow)
         }
 

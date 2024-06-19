@@ -53,5 +53,8 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.6")
+
     implementation("de.hdodenhof:circleimageview:3.1.0")
+    implementation ("pl.droidsonroids.gif:android-gif-drawable:1.2.23")
+    implementation ("com.google.android.gms:play-services-location:21.0.1")
 }
