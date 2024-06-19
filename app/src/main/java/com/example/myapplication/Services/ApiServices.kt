@@ -142,6 +142,27 @@ data class UpdatedAtData(
     val nanoseconds: Long
 )
 
+data class HistoryPredictResponse(
+    @SerializedName("message")
+    val message: String,
+    @SerializedName("data")
+    val data: List<Prediction>
+)
+
+data class Prediction(
+    @SerializedName("id")
+    val id: String,
+    @SerializedName("confidence")
+    val confidence: Double,
+    @SerializedName("created_at")
+    val createdAt: String,
+    @SerializedName("userId")
+    val userId: String,
+    @SerializedName("class")
+    val classType: String
+)
+
+
 
 interface ApiService {
     @POST("register")
@@ -176,7 +197,7 @@ interface ApiService {
         @Part("userId") userId: String,
     ): Call<PredictResponse>
 
-    @PUT("api/users/{userId}")
+    @PUT("users/{userId}")
     @Multipart
     fun updateUserProfile(
         @Header("Authorization") token: String,
@@ -186,6 +207,13 @@ interface ApiService {
         @Part("age") age: String,
         @Part profilePicture: MultipartBody.Part
     ): Call<UpdateProfileResponse>
+
+
+    @GET("/users/{userId}/predictions")
+    @Multipart
+    fun HistoryPredictResponse(
+        @Path("userId") userId: String
+    ): Call<HistoryPredictResponse>
 
 }
 

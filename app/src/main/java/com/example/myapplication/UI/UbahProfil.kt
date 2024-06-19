@@ -57,6 +57,8 @@ class UbahProfil : AppCompatActivity() {
             val Profilepicture = imagePicker.getFile()
             if (Profilepicture != null) {
                 UpdateProfile(authorizationHeader, userId, Nama, Gender, Umur, Profilepicture)
+                intent = Intent(this, Profil::class.java)
+                startActivity(intent)
             } else {
                 Toast.makeText(this, "File is null", Toast.LENGTH_SHORT).show()
             }
@@ -66,18 +68,19 @@ class UbahProfil : AppCompatActivity() {
     }
 
     private fun UpdateProfile(token: String, userId: String, Nama: String, Gender: String, Umur: String, Profilepicture: File) {
-        val upFile = MultipartBody.Part.createFormData("ProfilePicture", Profilepicture.name, Profilepicture.asRequestBody("multipart/form-data".toMediaTypeOrNull()))
-        val client = ApiConfig().getApiService().updateUserProfile(token, userId, Nama, Gender, Umur, upFile)
+        val profilePicturePart = MultipartBody.Part.createFormData(
+            "profilePicture",
+            Profilepicture.name,
+            Profilepicture.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+        )
+
+        val client = ApiConfig().getApiService().updateUserProfile(token, userId, Nama, Gender, Umur, profilePicturePart)
         client.enqueue(object : Callback<UpdateProfileResponse> {
             override fun onResponse(call: Call<UpdateProfileResponse>, response: Response<UpdateProfileResponse>) {
                 if (response.isSuccessful) {
                     val responseBody = response.body()
                     if (responseBody != null) {
                         Toast.makeText(this@UbahProfil, "Update Profile successful: ${responseBody.message}", Toast.LENGTH_SHORT).show()
-                        // Navigate to the login activity
-                        val intent = Intent(this@UbahProfil, Masuk::class.java)
-                        startActivity(intent)
-                        finish() // Optional: close this activity
                     } else {
                         Toast.makeText(this@UbahProfil, "Update Profile failed: No response body", Toast.LENGTH_SHORT).show()
                     }

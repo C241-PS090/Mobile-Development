@@ -133,4 +133,6 @@ class Beranda : AppCompatActivity(), ProfileManager.ProfileCallback {
             }
         }
     }
+
+
 }
