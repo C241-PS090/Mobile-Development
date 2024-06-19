@@ -86,6 +86,39 @@
             android:textColorHint="@color/black"
             android:textSize="14sp" />
 
+        <EditText
+            android:id="@+id/Umur"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/round"
+            android:backgroundTint="#D9D9D9"
+            android:fontFamily="@font/poppin_bold"
+            android:hint="Umur"
+            android:inputType="number"
+            android:padding="10dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="14sp" />
+
+        <Spinner
+            android:id="@+id/genderSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/round"
+            android:backgroundTint="#D9D9D9"
+            android:padding="10dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="14sp"
+            android:spinnerMode="dropdown"
+            app:popupTheme="@style/Theme.AppCompat.Light" />
+
         <Button
             android:id="@+id/updateProfile"
             android:layout_width="302dp"

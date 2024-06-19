@@ -86,6 +86,12 @@ data class Predictions(
     val createdAt: String
 )
 
+data class UpdateProfileResponse(
+    @field:SerializedName("message")
+    val message: String
+
+)
+
 
 interface ApiService {
     @POST("register")
@@ -129,7 +135,7 @@ interface ApiService {
         @Part("gender") gender: String,
         @Part("age") age: String,
         @Part profilePicture: MultipartBody.Part
-    ): Call<Void>
+    ): Call<UpdateProfileResponse>
 
 }
 

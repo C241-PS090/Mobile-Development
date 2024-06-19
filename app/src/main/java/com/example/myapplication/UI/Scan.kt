@@ -2,12 +2,17 @@ package com.example.myapplication.UI
 
 import ApiConfig
 import PredictResponse
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.result.ActivityResultRegistry
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.Image.ImagePicker
 import com.example.myapplication.Preferences.SharedPreference
+import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityScanBinding
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -63,7 +68,23 @@ class Scan : AppCompatActivity() {
                 if (response.isSuccessful) {
                     val responseBody = response.body()
                     if (responseBody != null) {
-                        Toast.makeText(this@Scan, "Predict successful: ${responseBody}", Toast.LENGTH_SHORT).show()
+
+                        var predict_class = responseBody.predictions.predictionClass
+                        val Confidance = responseBody.predictions.confidence
+                        val formattedConfidence = String.format("%.2f", Confidance)
+                        var pesan = ""
+
+                        if (predict_class == "Abnormal(Ulcer)"){
+                            predict_class = "Ulcer"
+                            pesan = "Cek Gula Darah Anda!"
+                        }else if (predict_class == "Normal(Healthy skin)"){
+                            predict_class = "Normal"
+                            pesan = "Kulit Anda Sehat!"
+                        }else if(predict_class == "Wound Images"){
+                            predict_class = "Luka Non-Ulcer"
+                            pesan = "Obati Luka Anda!"
+                        }
+                        showPredictionDialog(predict_class + " " + formattedConfidence+"%",pesan)
                     } else {
                         Toast.makeText(this@Scan, "Predict failed: No response body", Toast.LENGTH_SHORT).show()
                     }
@@ -76,5 +97,36 @@ class Scan : AppCompatActivity() {
                 Toast.makeText(this@Scan, "Predict failed: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
+    }
+
+    private fun showPredictionDialog(prediction: String,pesan : String) {
+        val builder = AlertDialog.Builder(this)
+        val inflater = layoutInflater
+        val dialogLayout = inflater.inflate(R.layout.popup_hasil, null)
+
+        val alertIcon = dialogLayout.findViewById<ImageView>(R.id.alertIcon)
+        val hasilText = dialogLayout.findViewById<TextView>(R.id.Hasil)
+        val pesanText = dialogLayout.findViewById<TextView>(R.id.tips)
+        val yesButton = dialogLayout.findViewById<Button>(R.id.yesButton)
+
+        hasilText.text = prediction
+        pesanText.text = pesan
+
+        if (pesan == "Cek Gula Darah Anda!") {
+            alertIcon.setImageResource(R.drawable.warning)
+        } else if (pesan == "Kulit Anda Sehat!") {
+            alertIcon.setImageResource(R.drawable.ceklis)
+        } else{
+            alertIcon.setImageResource(R.drawable.warning_yellow)
+        }
+
+        builder.setView(dialogLayout)
+        val dialog = builder.create()
+        dialog.show()
+
+        yesButton.setOnClickListener {
+            val intent = Intent(this, Beranda::class.java)
+            startActivity(intent)
+        }
     }
 }
