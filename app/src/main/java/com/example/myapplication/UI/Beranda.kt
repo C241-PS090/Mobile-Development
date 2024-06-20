@@ -1,5 +1,7 @@
 package com.example.myapplication.UI
 
+import ApiConfig
+import HistoryPredictResponse
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -18,6 +20,9 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.Task
 import profileResponse
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class Beranda : AppCompatActivity(), ProfileManager.ProfileCallback {
 
@@ -67,6 +72,12 @@ class Beranda : AppCompatActivity(), ProfileManager.ProfileCallback {
         }
         binding.quizBtn.setOnClickListener {
             startActivity(Intent(this, Quiz::class.java))
+        }
+
+        binding.tipsBtnImage.setOnClickListener {
+            intent = Intent(Intent.ACTION_VIEW)
+            intent.setData(Uri.parse("https://www.halodoc.com/artikel/search/diabetes"))
+            startActivity(intent)
         }
 
         val token = sharedPreference.getUserToken().toString()
@@ -123,6 +134,8 @@ class Beranda : AppCompatActivity(), ProfileManager.ProfileCallback {
         startActivity(mapIntent)
     }
 
+
+
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
@@ -134,5 +147,25 @@ class Beranda : AppCompatActivity(), ProfileManager.ProfileCallback {
         }
     }
 
+    private fun GetHistoryPredict(userId: String) {
+        val client = ApiConfig().getApiService().HistoryPredictResponse(userId)
 
+        client.enqueue(object : Callback<HistoryPredictResponse> {
+            override fun onResponse(call: Call<HistoryPredictResponse>, response: Response<HistoryPredictResponse>) {
+                if (response.isSuccessful) {
+                    val responseBody = response.body()
+                    if (responseBody != null) {
+                        Toast.makeText(this@Beranda, "Hist Predict Sucess", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(this@Beranda, "Hist Predict failed: No response body", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    Toast.makeText(this@Beranda, "Hist Predict failed: ${response.message()}", Toast.LENGTH_SHORT).show()
+                }
+            }
+            override fun onFailure(call: Call<HistoryPredictResponse>, t: Throwable) {
+                Toast.makeText(this@Beranda, "Hist Predict failed: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
 }

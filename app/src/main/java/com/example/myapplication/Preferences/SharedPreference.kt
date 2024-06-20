@@ -10,6 +10,7 @@ class SharedPreference(context: Context) {
     private val myName = "Name"
     private val myEmail = "Email"
     private val myid = "userId"
+    private val myImage = "Image"
     private val sharedPreference: SharedPreferences
 
     init {
@@ -70,6 +71,13 @@ class SharedPreference(context: Context) {
     // Fungsi untuk membersihkan nama pengguna
     fun clearUserName() {
         sharedPreference.edit().remove(myName).apply()
+    }
+    fun setImageProfile(profilePictureUrl: String) {
+        sharedPreference.edit().putString(myImage, " ").apply()
+    }
+
+    fun getImageProfile(): String? {
+        return sharedPreference.getString(myImage, " ")
     }
 
     // Fungsi untuk membersihkan email pengguna

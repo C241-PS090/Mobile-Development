@@ -62,8 +62,6 @@ class UbahProfil : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "File is null", Toast.LENGTH_SHORT).show()
             }
-
-
         }
     }
 
@@ -88,7 +86,6 @@ class UbahProfil : AppCompatActivity() {
                     Toast.makeText(this@UbahProfil, "Update Profile failed 1: ${response.message()}", Toast.LENGTH_SHORT).show()
                 }
             }
-
             override fun onFailure(call: Call<UpdateProfileResponse>, t: Throwable) {
                 Toast.makeText(this@UbahProfil, "Update Profile failed 2: ${t.message}", Toast.LENGTH_LONG).show()
             }

@@ -3,7 +3,6 @@ package com.example.myapplication.ViewModel
 import android.content.Context
 import android.widget.Toast
 import com.example.myapplication.Preferences.SharedPreference
-import com.example.myapplication.UI.Profil
 import profileResponse
 import retrofit2.Call
 import retrofit2.Callback
@@ -23,6 +22,7 @@ class ProfileManager(private val context: Context) {
                     if (responseBody != null) {
                         sharedPreference.saveUserName(responseBody.data.name)
                         sharedPreference.saveUserEmail(responseBody.data.email)
+                        sharedPreference.setImageProfile(responseBody.data.profilePictureUrl)
                         callback.onSuccess(responseBody)
                     } else {
                         callback.onError("Get profile failed: No response body")

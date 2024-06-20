@@ -34,6 +34,8 @@ class Profil : AppCompatActivity(), ProfileManager.ProfileCallback {
         binding.inputEmailProfile.text = sharedPreference.getUserEmail()
         binding.displayNamaProfile.text = sharedPreference.getUserName()
 
+        
+
         binding.bottomNavigationView.selectedItemId = R.id.profile_button
         binding.bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {

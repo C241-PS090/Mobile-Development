@@ -53,18 +53,46 @@ data class profileResponse(
     @SerializedName("id")
     val message: String,
     @SerializedName("data")
-    val data: profileResult
+    val data: ProfileResult
 )
 
-data class profileResult(
+data class ProfileResult(
+    @SerializedName("id")
+    val id: String,
     @SerializedName("password")
-    val userId: String,
+    val password: String,
     @SerializedName("role")
     val role: String,
-    @SerializedName("name")
-    val name: String,
     @SerializedName("email")
     val email: String,
+    @SerializedName("age")
+    val age: String,
+    @SerializedName("gender")
+    val gender: String,
+    @SerializedName("profilePictureUrl")
+    val profilePictureUrl: String,
+    @SerializedName("name")
+    val name: String,
+    @SerializedName("createdAt")
+    val createdAt: CreatedAt,
+    @SerializedName("updatedAt")
+    val updatedAt: UpdatedAt,
+    @SerializedName("token")
+    val token: String
+)
+
+data class CreatedAt(
+    @SerializedName("_seconds")
+    val seconds: Long,
+    @SerializedName("_nanoseconds")
+    val nanoseconds: Long
+)
+
+data class UpdatedAt(
+    @SerializedName("_seconds")
+    val seconds: Long,
+    @SerializedName("_nanoseconds")
+    val nanoseconds: Long
 )
 
 data class PredictResponse(
@@ -249,7 +277,6 @@ class ApiConfig {
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()
-
         return retrofit.create(ApiService::class.java)
     }
 }
