@@ -18,6 +18,7 @@ import com.example.myapplication.databinding.ActivityScanBinding
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -53,9 +54,10 @@ class Scan : AppCompatActivity() {
         binding.scanButton.setOnClickListener {
             val file = imagePicker.getFile()
             val userId = sharedPreference.getUserId().toString()
+            val userIdWithoutQuotes = userId.removeSurrounding("\"")
             if (file != null) {
                 showProgressDialog()
-                Predict(file, userId)
+                Predict(file, userIdWithoutQuotes)
             } else {
                 Toast.makeText(this, "File is null", Toast.LENGTH_SHORT).show()
             }
@@ -64,7 +66,7 @@ class Scan : AppCompatActivity() {
 
     private fun showProgressDialog() {
         progressDialog = Dialog(this)
-        progressDialog?.setContentView(R.layout.loading)
+        progressDialog?.setContentView(R.layout.loading_scan)
         progressDialog?.setCancelable(false) // Prevent dismiss on outside touch
         progressDialog?.show()
     }
@@ -75,7 +77,9 @@ class Scan : AppCompatActivity() {
 
     private fun Predict(file: File, userId: String) {
         val upFile = MultipartBody.Part.createFormData("file", file.name, file.asRequestBody("multipart/form-data".toMediaTypeOrNull()))
-        val client = ApiConfig().getPredictApiService().Predict(upFile, userId)
+        val userIdRequestBody = userId.toRequestBody("text/plain".toMediaTypeOrNull())
+
+        val client = ApiConfig().getPredictApiService().Predict(upFile, userIdRequestBody)
 
         client.enqueue(object : Callback<PredictResponse> {
             override fun onResponse(call: Call<PredictResponse>, response: Response<PredictResponse>) {

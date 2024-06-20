@@ -22,7 +22,9 @@ class ProfileManager(private val context: Context) {
                     if (responseBody != null) {
                         sharedPreference.saveUserName(responseBody.data.name)
                         sharedPreference.saveUserEmail(responseBody.data.email)
-                        sharedPreference.setImageProfile(responseBody.data.profilePictureUrl)
+                        sharedPreference.saveGender(responseBody.data.gender)
+                        sharedPreference.saveAge(responseBody.data.age)
+                        sharedPreference.setImageProfile(responseBody.data.profilePictureUrl ?: "")
                         callback.onSuccess(responseBody)
                     } else {
                         callback.onError("Get profile failed: No response body")
@@ -40,9 +42,7 @@ class ProfileManager(private val context: Context) {
 
     fun logout() {
         sharedPreference.setStatusLogin(false)
-        sharedPreference.clearUserToken()
-        sharedPreference.clearUserLogin()
-        sharedPreference.clearUserName()
+        sharedPreference.clearAllUserData()
         Toast.makeText(context, "Logged out successfully", Toast.LENGTH_SHORT).show()
     }
 

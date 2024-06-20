@@ -4,8 +4,10 @@ import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import com.example.myapplication.Preferences.SharedPreference
 import com.example.myapplication.R
 import com.example.myapplication.ViewModel.ProfileManager
@@ -17,6 +19,7 @@ class Profil : AppCompatActivity(), ProfileManager.ProfileCallback {
     private lateinit var binding: ActivityProfilBinding
     private lateinit var sharedPreference: SharedPreference
     private lateinit var profileManager: ProfileManager
+    private lateinit var imageView: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +37,19 @@ class Profil : AppCompatActivity(), ProfileManager.ProfileCallback {
         binding.inputEmailProfile.text = sharedPreference.getUserEmail()
         binding.displayNamaProfile.text = sharedPreference.getUserName()
 
-        
+        val imagerUrl = sharedPreference.getImageProfile()
+        imageView = binding.imageView2
+
+        println("Image URL: $imagerUrl")
+
+        if (imagerUrl != null && imagerUrl.isNotEmpty()) {
+            Glide.with(this)
+                .load(imagerUrl)
+                .circleCrop()
+                .into(imageView)
+        } else {
+            imageView.setImageResource(R.drawable.profile)
+        }
 
         binding.bottomNavigationView.selectedItemId = R.id.profile_button
         binding.bottomNavigationView.setOnNavigationItemSelectedListener { item ->

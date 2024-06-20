@@ -9,8 +9,10 @@ class SharedPreference(context: Context) {
     private val myToken = "Bearer"
     private val myName = "Name"
     private val myEmail = "Email"
-    private val myid = "userId"
+    private val myId = "userId"
     private val myImage = "Image"
+    private val myAge = "Age"
+    private val myGender = "Gender"
     private val sharedPreference: SharedPreferences
 
     init {
@@ -30,14 +32,15 @@ class SharedPreference(context: Context) {
     }
 
     fun getUserToken(): String? {
-        return sharedPreference.getString(myToken, " ")
+        return sharedPreference.getString(myToken, "")
     }
+
     fun saveUserId(id: String) {
-        sharedPreference.edit().putString(myid, id).apply()
+        sharedPreference.edit().putString(myId, id).apply()
     }
 
     fun getUserId(): String? {
-        return sharedPreference.getString(myid, " ")
+        return sharedPreference.getString(myId, "")
     }
 
     fun clearUserToken() {
@@ -48,44 +51,48 @@ class SharedPreference(context: Context) {
         sharedPreference.edit().remove(login).apply()
     }
 
-    // Fungsi untuk menyimpan nama pengguna
     fun saveUserName(name: String) {
         sharedPreference.edit().putString(myName, name).apply()
     }
 
-    // Fungsi untuk mengambil nama pengguna
     fun getUserName(): String? {
-        return sharedPreference.getString(myName, " ")
+        return sharedPreference.getString(myName, "")
     }
 
-    // Fungsi untuk menyimpan email pengguna
     fun saveUserEmail(email: String) {
         sharedPreference.edit().putString(myEmail, email).apply()
     }
 
-    // Fungsi untuk mengambil email pengguna
     fun getUserEmail(): String? {
-        return sharedPreference.getString(myEmail, " ")
+        return sharedPreference.getString(myEmail, "")
     }
 
-    // Fungsi untuk membersihkan nama pengguna
     fun clearUserName() {
         sharedPreference.edit().remove(myName).apply()
     }
+
     fun setImageProfile(profilePictureUrl: String) {
-        sharedPreference.edit().putString(myImage, " ").apply()
+        sharedPreference.edit().putString(myImage, profilePictureUrl).apply()
     }
 
     fun getImageProfile(): String? {
-        return sharedPreference.getString(myImage, " ")
+        return sharedPreference.getString(myImage, "")
     }
 
-    // Fungsi untuk membersihkan email pengguna
-    fun clearUserEmail() {
-        sharedPreference.edit().remove(myEmail).apply()
+    fun saveAge(age: String) {
+        sharedPreference.edit().putString(myAge, age).apply()
+    }
+    fun getAge(): String? {
+        return sharedPreference.getString(myAge, "")
     }
 
-    // Fungsi untuk membersihkan semua data pengguna
+    fun saveGender(Gender: String) {
+        sharedPreference.edit().putString(myGender, Gender).apply()
+    }
+    fun getGender(): String? {
+        return sharedPreference.getString(myGender, "")
+    }
+
     fun clearAllUserData() {
         sharedPreference.edit().clear().apply()
     }

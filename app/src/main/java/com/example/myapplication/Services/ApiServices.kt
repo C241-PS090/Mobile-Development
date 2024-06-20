@@ -1,5 +1,3 @@
-// ApiService.kt
-
 import com.google.gson.annotations.SerializedName
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
@@ -9,6 +7,7 @@ import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
@@ -18,6 +17,7 @@ import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Part
 import retrofit2.http.Path
+import retrofit2.http.Url
 import java.io.File
 import java.util.concurrent.TimeUnit
 
@@ -34,6 +34,10 @@ data class LoginResponse(
     val message: String,
     @SerializedName("data")
     val data: LoginResult
+)
+
+data class LogoutResponse(
+    val message: String
 )
 
 data class LoginResult(
@@ -222,7 +226,7 @@ interface ApiService {
     @Multipart
     fun Predict(
         @Part file: MultipartBody.Part,
-        @Part("userId") userId: String,
+        @Part("userId") userId: RequestBody,
     ): Call<PredictResponse>
 
     @PUT("users/{userId}")
@@ -237,11 +241,16 @@ interface ApiService {
     ): Call<UpdateProfileResponse>
 
 
-    @GET("/users/{userId}/predictions")
-    @Multipart
-    fun HistoryPredictResponse(
+    @GET("users/{userId}/predictions")
+    fun getHistoryPredictions(
         @Path("userId") userId: String
     ): Call<HistoryPredictResponse>
+
+    @DELETE("/logout")
+    fun logout(
+//        @Url url: String,
+        @Header("Authorization") token: String
+    ): Call<LogoutResponse>
 
 }
 

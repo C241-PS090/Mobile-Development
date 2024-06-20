@@ -78,6 +78,10 @@ class UbahProfil : AppCompatActivity() {
                 if (response.isSuccessful) {
                     val responseBody = response.body()
                     if (responseBody != null) {
+                        sharedPreference.saveUserName(responseBody.data.name)
+                        sharedPreference.saveGender(responseBody.data.gender)
+                        sharedPreference.saveAge(responseBody.data.age)
+                        sharedPreference.setImageProfile(responseBody.data.profilePictureUrl ?: "")
                         Toast.makeText(this@UbahProfil, "Update Profile successful: ${responseBody.message}", Toast.LENGTH_SHORT).show()
                     } else {
                         Toast.makeText(this@UbahProfil, "Update Profile failed: No response body", Toast.LENGTH_SHORT).show()
