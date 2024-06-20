@@ -79,14 +79,14 @@ class SharedPreference(context: Context) {
         return sharedPreference.getString(myImage, "")
     }
 
-    fun saveAge(age: String) {
+    fun saveAge(age: String?) {
         sharedPreference.edit().putString(myAge, age).apply()
     }
     fun getAge(): String? {
         return sharedPreference.getString(myAge, "")
     }
 
-    fun saveGender(Gender: String) {
+    fun saveGender(Gender: String?) {
         sharedPreference.edit().putString(myGender, Gender).apply()
     }
     fun getGender(): String? {

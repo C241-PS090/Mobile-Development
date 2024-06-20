@@ -1,11 +1,11 @@
 package com.example.myapplication.UI
 
 import ApiConfig
+import LogoutResponse
 import UpdateProfileResponse
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.Toast
@@ -16,7 +16,9 @@ import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityUbahProfilBinding
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -27,7 +29,7 @@ class UbahProfil : AppCompatActivity() {
     private lateinit var imagePicker: ImagePicker
     private lateinit var genderSpinner: Spinner
     private lateinit var sharedPreference: SharedPreference
-    private var loadingDialog: Dialog? = null
+    private lateinit var loadingDialog: Dialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +37,7 @@ class UbahProfil : AppCompatActivity() {
         setContentView(binding.root)
 
         sharedPreference = SharedPreference(this)
+        loadingDialog = createLoadingDialog()
 
         imagePicker = ImagePicker(this, binding.imageUpdate, application, "com.example.myapplication.fileprovider", activityResultRegistry)
         imagePicker.initialize()
@@ -67,14 +70,34 @@ class UbahProfil : AppCompatActivity() {
         }
     }
 
+    private fun createLoadingDialog(): Dialog {
+        val dialog = Dialog(this)
+        dialog.setContentView(R.layout.loading)
+        dialog.setCancelable(false)
+        return dialog
+    }
+
+    private fun showLoadingDialog() {
+        loadingDialog.show()
+    }
+
+    private fun hideLoadingDialog() {
+        if (loadingDialog.isShowing) {
+            loadingDialog.dismiss()
+        }
+    }
+
     private fun UpdateProfile(token: String, userId: String, Nama: String, Gender: String, Umur: String, Profilepicture: File) {
         val profilePicturePart = MultipartBody.Part.createFormData(
             "profilePicture",
             Profilepicture.name,
             Profilepicture.asRequestBody("multipart/form-data".toMediaTypeOrNull())
         )
+        val nameRequestBody = Nama.toRequestBody("text/plain".toMediaTypeOrNull())
+        val genderRequestBody = Gender.toRequestBody("text/plain".toMediaTypeOrNull())
+        val ageRequestBody = Umur.toRequestBody("text/plain".toMediaTypeOrNull())
 
-        val client = ApiConfig().getApiService().updateUserProfile(token, userId, Nama, Gender, Umur, profilePicturePart)
+        val client = ApiConfig().getApiService().updateUserProfile(token, userId, nameRequestBody, genderRequestBody, ageRequestBody, profilePicturePart)
         client.enqueue(object : Callback<UpdateProfileResponse> {
             override fun onResponse(call: Call<UpdateProfileResponse>, response: Response<UpdateProfileResponse>) {
                 hideLoadingDialog()
@@ -92,28 +115,13 @@ class UbahProfil : AppCompatActivity() {
                         Toast.makeText(this@UbahProfil, "Update Profile failed: No response body", Toast.LENGTH_SHORT).show()
                     }
                 } else {
-                    Toast.makeText(this@UbahProfil, "Update Profile failed 1: ${response.message()}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@UbahProfil, "Update Profile failed: ${response.message()}", Toast.LENGTH_SHORT).show()
                 }
             }
-
             override fun onFailure(call: Call<UpdateProfileResponse>, t: Throwable) {
                 hideLoadingDialog()
-                Toast.makeText(this@UbahProfil, "Update Profile failed 2: ${t.message}", Toast.LENGTH_LONG).show()
+                Toast.makeText(this@UbahProfil, "Update Profile failed: ${t.message}", Toast.LENGTH_LONG).show()
             }
         })
-    }
-
-    private fun showLoadingDialog() {
-        val inflater = LayoutInflater.from(this)
-        val view = inflater.inflate(R.layout.loading, null)
-
-        loadingDialog = Dialog(this)
-        loadingDialog?.setContentView(view)
-        loadingDialog?.setCancelable(false)
-        loadingDialog?.show()
-    }
-
-    private fun hideLoadingDialog() {
-        loadingDialog?.dismiss()
     }
 }

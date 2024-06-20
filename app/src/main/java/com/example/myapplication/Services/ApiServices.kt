@@ -234,9 +234,9 @@ interface ApiService {
     fun updateUserProfile(
         @Header("Authorization") token: String,
         @Path("userId") userId: String,
-        @Part("name") name: String,
-        @Part("gender") gender: String,
-        @Part("age") age: String,
+        @Part("name") name: RequestBody,
+        @Part("gender") gender: RequestBody,
+        @Part("age") age: RequestBody,
         @Part profilePicture: MultipartBody.Part
     ): Call<UpdateProfileResponse>
 
@@ -246,9 +246,8 @@ interface ApiService {
         @Path("userId") userId: String
     ): Call<HistoryPredictResponse>
 
-    @DELETE("/logout")
+    @DELETE("logout")
     fun logout(
-//        @Url url: String,
         @Header("Authorization") token: String
     ): Call<LogoutResponse>
 

@@ -80,7 +80,6 @@ class Profil : AppCompatActivity(), ProfileManager.ProfileCallback {
         sharedPreference.saveUserEmail(profileResponse.data.email)
         binding.displayNamaProfile.text = profileResponse.data.name
         binding.inputEmailProfile.text = profileResponse.data.email
-        Toast.makeText(this, "Get profile successful: ${profileResponse.message}", Toast.LENGTH_SHORT).show()
     }
 
     override fun onError(errorMessage: String) {

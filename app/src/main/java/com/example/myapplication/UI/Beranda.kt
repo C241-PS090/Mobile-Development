@@ -113,11 +113,6 @@ class Beranda : AppCompatActivity(), ProfileManager.ProfileCallback {
         sharedPreference.saveUserEmail(profileResponse.data.email)
         sharedPreference.setImageProfile(profileResponse.data.profilePictureUrl ?: "")
         binding.userName.text = profileResponse.data.name
-        Toast.makeText(
-            this,
-            "Get profile successful: ${profileResponse.message}",
-            Toast.LENGTH_SHORT
-        ).show()
     }
 
     override fun onError(errorMessage: String) {
@@ -173,7 +168,6 @@ class Beranda : AppCompatActivity(), ProfileManager.ProfileCallback {
                 if (response.isSuccessful) {
                     val responseBody = response.body()
                     if (responseBody != null) {
-                        Toast.makeText(this@Beranda, "Hist Predict Success", Toast.LENGTH_SHORT).show()
                         setupRecyclerView(responseBody.data)
                     } else {
                         Toast.makeText(this@Beranda, "Hist Predict failed: No response body", Toast.LENGTH_SHORT).show()
