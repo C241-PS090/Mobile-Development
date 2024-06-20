@@ -2,8 +2,10 @@ package com.example.myapplication.UI
 
 import ApiConfig
 import UpdateProfileResponse
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.Toast
@@ -25,6 +27,7 @@ class UbahProfil : AppCompatActivity() {
     private lateinit var imagePicker: ImagePicker
     private lateinit var genderSpinner: Spinner
     private lateinit var sharedPreference: SharedPreference
+    private var loadingDialog: Dialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,9 +59,8 @@ class UbahProfil : AppCompatActivity() {
             val Umur = binding.Umur.text.toString().trim()
             val Profilepicture = imagePicker.getFile()
             if (Profilepicture != null) {
+                showLoadingDialog()
                 UpdateProfile(authorizationHeader, userId, Nama, Gender, Umur, Profilepicture)
-                intent = Intent(this, Profil::class.java)
-                startActivity(intent)
             } else {
                 Toast.makeText(this, "File is null", Toast.LENGTH_SHORT).show()
             }
@@ -75,6 +77,7 @@ class UbahProfil : AppCompatActivity() {
         val client = ApiConfig().getApiService().updateUserProfile(token, userId, Nama, Gender, Umur, profilePicturePart)
         client.enqueue(object : Callback<UpdateProfileResponse> {
             override fun onResponse(call: Call<UpdateProfileResponse>, response: Response<UpdateProfileResponse>) {
+                hideLoadingDialog()
                 if (response.isSuccessful) {
                     val responseBody = response.body()
                     if (responseBody != null) {
@@ -83,6 +86,8 @@ class UbahProfil : AppCompatActivity() {
                         sharedPreference.saveAge(responseBody.data.age)
                         sharedPreference.setImageProfile(responseBody.data.profilePictureUrl ?: "")
                         Toast.makeText(this@UbahProfil, "Update Profile successful: ${responseBody.message}", Toast.LENGTH_SHORT).show()
+                        intent = Intent(this@UbahProfil, Profil::class.java)
+                        startActivity(intent)
                     } else {
                         Toast.makeText(this@UbahProfil, "Update Profile failed: No response body", Toast.LENGTH_SHORT).show()
                     }
@@ -90,9 +95,25 @@ class UbahProfil : AppCompatActivity() {
                     Toast.makeText(this@UbahProfil, "Update Profile failed 1: ${response.message()}", Toast.LENGTH_SHORT).show()
                 }
             }
+
             override fun onFailure(call: Call<UpdateProfileResponse>, t: Throwable) {
+                hideLoadingDialog()
                 Toast.makeText(this@UbahProfil, "Update Profile failed 2: ${t.message}", Toast.LENGTH_LONG).show()
             }
         })
+    }
+
+    private fun showLoadingDialog() {
+        val inflater = LayoutInflater.from(this)
+        val view = inflater.inflate(R.layout.loading, null)
+
+        loadingDialog = Dialog(this)
+        loadingDialog?.setContentView(view)
+        loadingDialog?.setCancelable(false)
+        loadingDialog?.show()
+    }
+
+    private fun hideLoadingDialog() {
+        loadingDialog?.dismiss()
     }
 }
