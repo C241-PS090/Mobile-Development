@@ -248,7 +248,8 @@ interface ApiService {
 
     @DELETE("logout")
     fun logout(
-        @Header("Authorization") token: String
+        @Header("Authorization") token: String,
+        @Header("Cookie") refreshToken: String
     ): Call<LogoutResponse>
 
 }

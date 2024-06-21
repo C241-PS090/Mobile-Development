@@ -1,5 +1,7 @@
 package com.example.myapplication.UI
 
+import ApiConfig
+import LogoutResponse
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
@@ -13,6 +15,9 @@ import com.example.myapplication.R
 import com.example.myapplication.ViewModel.ProfileManager
 import com.example.myapplication.databinding.ActivityProfilBinding
 import profileResponse
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class Profil : AppCompatActivity(), ProfileManager.ProfileCallback {
 
@@ -94,6 +99,9 @@ class Profil : AppCompatActivity(), ProfileManager.ProfileCallback {
         val noButton: Button = dialog.findViewById(R.id.noButton)
 
         yesButton.setOnClickListener {
+            val token = sharedPreference.getUserToken().toString()
+
+            Logout(token)
             dialog.dismiss()
             profileManager.logout()
             startActivity(Intent(this, MainActivity::class.java))
@@ -105,5 +113,24 @@ class Profil : AppCompatActivity(), ProfileManager.ProfileCallback {
         }
 
         dialog.show()
+    }
+
+    private fun Logout(token: String) {
+        val cookietoken = "token= $token"
+        val authorizationHeader = "Bearer $token"
+        val client = ApiConfig().getApiService().logout(authorizationHeader,cookietoken)
+        client.enqueue(object : Callback<LogoutResponse> {
+            override fun onResponse(call: Call<LogoutResponse>, response: Response<LogoutResponse>) {
+                if (response.isSuccessful) {
+                    val responseBody = response.body()
+                    if (responseBody != null) {
+                        Toast.makeText(this@Profil, "LogOut!", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+            override fun onFailure(call: Call<LogoutResponse>, t: Throwable) {
+                Toast.makeText(this@Profil, "LogOut failed: ${t.message}", Toast.LENGTH_LONG).show()
+            }
+        })
     }
 }

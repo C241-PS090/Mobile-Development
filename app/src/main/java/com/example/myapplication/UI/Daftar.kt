@@ -2,22 +2,28 @@ package com.example.myapplication.UI
 
 import ApiConfig
 import SignUpResponse
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.databinding.ActivityDaftarBinding
+import com.example.myapplication.R
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class Daftar : AppCompatActivity() {
     private lateinit var binding: ActivityDaftarBinding
+    private lateinit var loadingDialog: Dialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDaftarBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Initialize the loading dialog
+        loadingDialog = createLoadingDialog()
 
         binding.BackButtonDaftar.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
@@ -34,16 +40,19 @@ class Daftar : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
             }
-
-            val intent = Intent(this,Masuk::class.java)
-            startActivity(intent)
         }
     }
 
     private fun signUp(name: String, email: String, password: String) {
+        // Show the loading dialog when sign-up is initiated
+        showLoadingDialog()
+
         val client = ApiConfig().getApiService().register(name, email, password)
         client.enqueue(object : Callback<SignUpResponse> {
             override fun onResponse(call: Call<SignUpResponse>, response: Response<SignUpResponse>) {
+                // Dismiss the loading dialog when the response is received
+                hideLoadingDialog()
+
                 if (response.isSuccessful) {
                     val responseBody = response.body()
                     if (responseBody != null) {
@@ -61,8 +70,30 @@ class Daftar : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<SignUpResponse>, t: Throwable) {
+                // Dismiss the loading dialog when the request fails
+                hideLoadingDialog()
                 Toast.makeText(this@Daftar, "Sign-up failed: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
+    }
+
+    private fun createLoadingDialog(): Dialog {
+        val dialog = Dialog(this)
+        dialog.setContentView(R.layout.loading)
+        dialog.setCancelable(false)
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        return dialog
+    }
+
+    private fun showLoadingDialog() {
+        if (!loadingDialog.isShowing) {
+            loadingDialog.show()
+        }
+    }
+
+    private fun hideLoadingDialog() {
+        if (loadingDialog.isShowing) {
+            loadingDialog.dismiss()
+        }
     }
 }
