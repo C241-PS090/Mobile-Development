@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/green_background"
-    tools:context=".Masuk">
+    tools:context=".UI.Masuk">
     
     <LinearLayout
         android:layout_marginTop="100dp"
@@ -32,7 +32,7 @@
             android:textColor="@color/white"
             android:textSize="30sp" />
 
-        <EditText
+        <com.example.myapplication.View.EmailView
             android:id="@+id/input_email_Login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -49,7 +49,7 @@
             android:textColorHint="@color/black"
             android:textSize="14sp" />
 
-        <EditText
+        <com.example.myapplication.View.PasswordView
             android:id="@+id/input_password_Login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -2,4 +2,8 @@
     <string name="app_name">My Application</string>
     <string name="jawaban">Jawaban</string>
     <string name="berapa_nilai_terakhir_gula_darah_anda">Berapa nilai terakhir gula darah anda?</string>
+    <string name="email_invalid">"Email Tidak Valid"</string>
+    <string name="password_invalid">"Password minimal 8 karakter"</string>
+    <string name="default_umur">Umur</string>
+    <string name="default_gender">Gender</string>
 </resources>

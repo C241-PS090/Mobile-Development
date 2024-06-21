@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/home_button"
         android:icon="@drawable/home_icon"
-        android:title="home" />
+        android:title="Home"
+        app:showAsAction="always" />
     <item
         android:id="@+id/camera_button"
         android:icon="@drawable/camera_icon"
-        android:title="camera" />
+        android:title="Camera"
+        app:showAsAction="always" />
     <item
         android:id="@+id/profile_button"
         android:icon="@drawable/person_icon"
-        android:title="profile" />
+        android:title="Profile"
+        app:showAsAction="always" />
 </menu>
